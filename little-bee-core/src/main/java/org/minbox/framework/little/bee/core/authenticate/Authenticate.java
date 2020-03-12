@@ -17,17 +17,17 @@ public interface Authenticate {
     void setUsername(String username);
 
     /**
-     * Set the host name of the connection service
+     * Set the host name to connect to the remote server
      * <p>
      * To configure the host name instead of the IP address,
      * you need to add the host to IP mapping in the "/etc/hosts" configuration file
      *
-     * @param hostName The host name
+     * @param hostname The host name
      */
-    void setHostName(String hostName);
+    void setHostname(String hostname);
 
     /**
-     * Set the serverIp of the connection service
+     * Set the serverIp to connect to the remote server
      * <p>
      * can configure intranet or public network IP address
      *
