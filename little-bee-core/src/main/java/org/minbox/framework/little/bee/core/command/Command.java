@@ -51,6 +51,13 @@ public interface Command {
     void setExecutionDirectory(String executionDirectory);
 
     /**
+     * Set the command to execute in a non-blocking manner
+     *
+     * @param nonBlocking Execute command in non-blocking mode when set to true
+     */
+    void setNonBlocking(CommandNonBlocking nonBlocking);
+
+    /**
      * Execute command line
      *
      * @return Result of executing the command，specific implementation see {@link CommandResponse} implementation class
