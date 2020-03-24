@@ -38,6 +38,11 @@ public class CommandNonBlocking {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Get the default position of the log file
+     *
+     * @return The default position is "~/.little-bee/logs"
+     */
     private static String getDefaultPosition() {
         return LittleBeeConstant.LITTLE_BEE_DIR + LOG_SUB_PATH;
     }
