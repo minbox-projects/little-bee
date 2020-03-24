@@ -26,6 +26,23 @@ public class AuthenticateDefaultSupport implements Authenticate {
      */
     private static final String HOST_CONNECTION_PATTERN = "%s@%s";
 
+    /**
+     * Default constructor
+     */
+    public AuthenticateDefaultSupport() {
+    }
+
+    /**
+     * Instantiate Authenticate object with "username", "hostname"
+     *
+     * @param username User name to connect to the server
+     * @param hostname Host name of the connection server
+     */
+    public AuthenticateDefaultSupport(String username, String hostname) {
+        this.username = username;
+        this.hostname = hostname;
+    }
+
     @Override
     public void setUsername(String username) {
         this.username = username;

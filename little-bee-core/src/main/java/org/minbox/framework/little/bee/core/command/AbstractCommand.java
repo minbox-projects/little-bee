@@ -3,6 +3,7 @@ package org.minbox.framework.little.bee.core.command;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
+import org.minbox.framework.little.bee.core.LittleBeeConstant;
 import org.minbox.framework.little.bee.core.authenticate.Authenticate;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -54,10 +55,19 @@ public abstract class AbstractCommand implements Command {
         this.bash = bash;
     }
 
+    /**
+     * Set authentication information
+     * <p>
+     * when we set the authentication information,
+     * it indicates that it is a remote operation command, so we need to set "remoteExecution" to "true"
+     *
+     * @param authenticate Login authentication
+     */
     @Override
     public void setAuthenticate(Authenticate authenticate) {
         Assert.notNull(authenticate, "If you need to set remote authentication information, pass valid parameters");
         this.authenticate = authenticate;
+        this.remoteExecution = true;
     }
 
     @Override
@@ -81,11 +91,11 @@ public abstract class AbstractCommand implements Command {
         }
     }
 
-    public Authenticate getAuthenticate() {
+    protected Authenticate getAuthenticate() {
         return authenticate;
     }
 
-    public String getBash() {
+    private String getBash() {
         return bash;
     }
 
@@ -119,5 +129,97 @@ public abstract class AbstractCommand implements Command {
      */
     public String getExecutionDirectory() {
         return executionDirectory;
+    }
+
+    /**
+     * Get the formatted execution directory
+     * <p>
+     * if there is a remote execution directory,
+     * you need to "cd" to enter the command before executing the corresponding bash
+     *
+     * @return "cd /xx/xx;"
+     */
+    protected String getFormatExecutionDirectory() {
+        if (!ObjectUtils.isEmpty(this.executionDirectory)) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(LittleBeeConstant.SSH_CD);
+            buffer.append(LittleBeeConstant.SPACE);
+            buffer.append(this.executionDirectory);
+            buffer.append(LittleBeeConstant.SEMICOLON);
+            return buffer.toString();
+        }
+        return LittleBeeConstant.EMPTY_STRING;
+    }
+
+    /**
+     * Get the formatted command options
+     * <p>
+     * format options array as a string, separated by spaces
+     * <p>
+     * if you execute "git pull origin master", "git" is a bash command.
+     * the "pull", "origin", "master" are options
+     * options array = {"pull","origin","master"}
+     *
+     * @return command options string
+     */
+    protected String getFormatOptions() {
+        if (!ObjectUtils.isEmpty(this.options)) {
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < options.length; i++) {
+                buffer.append(options[i]);
+                buffer.append(i == options.length - 1 ? LittleBeeConstant.EMPTY_STRING : LittleBeeConstant.SPACE);
+            }
+            return buffer.toString();
+        }
+        return LittleBeeConstant.EMPTY_STRING;
+    }
+
+    /**
+     * Get the prefix of the command line
+     * <p>
+     * prefix only exists when accessing remote server
+     * the format is "ssh username@serverIp"
+     *
+     * @return The command line prefix string
+     */
+    protected String getCommandLinePrefix() {
+        if (isRemoteExecution()) {
+            Authenticate authenticate = getAuthenticate();
+            String connection = authenticate.getConnectionInformation();
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(LittleBeeConstant.SSH_BASH);
+            buffer.append(LittleBeeConstant.SPACE);
+            buffer.append(connection);
+            buffer.append(LittleBeeConstant.SPACE);
+            return buffer.toString();
+        }
+        return LittleBeeConstant.EMPTY_STRING;
+    }
+
+    /**
+     * Get command line
+     * <p>
+     * append "ssh username@serverIp" prefix of remote execution command according to "remoteExecution"
+     * <p>
+     * if "executionDirectory" is set, you need to "cd" to this directory before executing the command
+     * <p>
+     * if options are required for command execution, append the formatted string after bash
+     *
+     * @return command line string
+     */
+    protected String getCommandLine() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getCommandLinePrefix());
+        if (this.remoteExecution) {
+            buffer.append(LittleBeeConstant.QUOTE);
+        }
+        buffer.append(getFormatExecutionDirectory());
+        buffer.append(getBash());
+        buffer.append(LittleBeeConstant.SPACE);
+        buffer.append(getFormatOptions());
+        if (this.remoteExecution) {
+            buffer.append(LittleBeeConstant.QUOTE);
+        }
+        return buffer.toString();
     }
 }
