@@ -9,6 +9,8 @@ import org.minbox.framework.little.bee.core.command.response.*;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import java.io.File;
+
 /**
  * Abstract implementation of the {@link Command} interface
  * <p>
@@ -118,6 +120,14 @@ public abstract class AbstractCommand implements Command {
         this.nonBlocking = nonBlocking;
     }
 
+    /**
+     * Before executing the command
+     * <p>
+     * handle some necessary validation and business before executing the command
+     */
+    private void preExecute() {
+        createNonBlockLogDir();
+    }
 
     /**
      * Execution command line
@@ -132,6 +142,7 @@ public abstract class AbstractCommand implements Command {
     public CommandResponse execute() throws LittleBeeCommandException {
         CommandResponse response;
         try {
+            preExecute();
             String[] commands = new String[]{BIN_BASH_COMMAND, BASH_COMMAND_OPTIONS, getCommandLine()};
             Process process = Runtime.getRuntime().exec(commands);
             CommandResponseType responseType = covertResponseType();
@@ -346,5 +357,18 @@ public abstract class AbstractCommand implements Command {
         return responseType;
     }
 
+    /**
+     * Create non-blocking command response log directory
+     * <p>
+     * create directory if it does not exist
+     */
+    private void createNonBlockLogDir() {
+        if (!blocking) {
+            File file = new File(nonBlocking.getLogFilePosition());
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        }
+    }
 
 }
