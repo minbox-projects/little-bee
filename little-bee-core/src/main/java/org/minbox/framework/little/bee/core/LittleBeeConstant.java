@@ -21,6 +21,10 @@ public interface LittleBeeConstant {
      */
     String SSH_BASH = "ssh";
     /**
+     * The "nohup" bash
+     */
+    String SSH_NO_HUP = "nohup";
+    /**
      * The "cd" ssh bash
      */
     String SSH_CD = "cd";
@@ -32,4 +36,16 @@ public interface LittleBeeConstant {
      * Semicolon
      */
     String SEMICOLON = ";";
+    /**
+     * The little bee execution configuration directory
+     */
+    String LITTLE_BEE_DIR = "~/.little-bee";
+    /**
+     * direction command options
+     */
+    String DIRECTION = " > ";
+    /**
+     * the "nohup" command suffix
+     */
+    String NO_HUP_SUFFIX = " 2>&1 &";
 }
