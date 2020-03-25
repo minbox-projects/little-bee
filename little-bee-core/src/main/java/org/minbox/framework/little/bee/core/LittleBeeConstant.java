@@ -39,7 +39,7 @@ public interface LittleBeeConstant {
     /**
      * The little bee execution configuration directory
      */
-    String LITTLE_BEE_DIR = "~/.little-bee";
+    String LITTLE_BEE_DIR = ".little-bee";
     /**
      * direction command options
      */
@@ -48,4 +48,8 @@ public interface LittleBeeConstant {
      * the "nohup" command suffix
      */
     String NO_HUP_SUFFIX = " 2>&1 &";
+    /**
+     * java system variable current user home directory
+     */
+    String USER_HOME = "user.home";
 }
