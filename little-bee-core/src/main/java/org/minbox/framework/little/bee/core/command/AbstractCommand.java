@@ -5,6 +5,7 @@ import com.sun.org.slf4j.internal.LoggerFactory;
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.minbox.framework.little.bee.core.LittleBeeConstant;
 import org.minbox.framework.little.bee.core.authenticate.Authenticate;
+import org.minbox.framework.little.bee.core.command.response.*;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -21,6 +22,14 @@ public abstract class AbstractCommand implements Command {
      * logger instance
      */
     static Logger logger = LoggerFactory.getLogger(AbstractCommand.class);
+    /**
+     * The "bash" command location
+     */
+    private static final String BIN_BASH_COMMAND = "/bin/bash";
+    /**
+     * The bash command options
+     */
+    private static final String BASH_COMMAND_OPTIONS = "-c";
     /**
      * Authentication information required for remote command execution
      * If it is executed locally, it can be left unset.
@@ -42,6 +51,15 @@ public abstract class AbstractCommand implements Command {
      * Command execution directory
      */
     private String executionDirectory;
+    /**
+     * blocking command execution
+     */
+    private boolean blocking;
+    /**
+     * Non-blocking command execution
+     * default use {@link CommandNonBlocking#instance()}
+     */
+    private CommandNonBlocking nonBlocking = CommandNonBlocking.instance();
 
     /**
      * Set basic bash for command execution
@@ -53,6 +71,10 @@ public abstract class AbstractCommand implements Command {
     protected void setBash(String bash) {
         Assert.notNull(bash, "Basic bash cannot be null");
         this.bash = bash;
+    }
+
+    public void setBlocking() {
+        this.blocking = true;
     }
 
     /**
@@ -89,6 +111,37 @@ public abstract class AbstractCommand implements Command {
         if (ObjectUtils.isEmpty(executionDirectory)) {
             logger.warn("If you do not set the execution directory, the command will be executed at \"/root\"");
         }
+    }
+
+    @Override
+    public void setNonBlocking(CommandNonBlocking nonBlocking) {
+        this.nonBlocking = nonBlocking;
+    }
+
+
+    /**
+     * Execution command line
+     * <p>
+     * After executing the command line,
+     * instantiate the {@link CommandResponse} instance according to the {@link #blocking}
+     *
+     * @return The command response instance
+     * @throws LittleBeeCommandException Exception encountered while executing the command
+     */
+    @Override
+    public CommandResponse execute() throws LittleBeeCommandException {
+        CommandResponse response;
+        try {
+            String[] commands = new String[]{BIN_BASH_COMMAND, BASH_COMMAND_OPTIONS, getCommandLine()};
+            Process process = Runtime.getRuntime().exec(commands);
+            CommandResponseType responseType = covertResponseType();
+            response = CommandResponseFactory.instance(responseType);
+            response.setProcess(process);
+            response.setCommandNonBlocking(nonBlocking);
+        } catch (Exception e) {
+            throw new LittleBeeCommandException(e.getMessage(), e);
+        }
+        return response;
     }
 
     protected Authenticate getAuthenticate() {
@@ -140,15 +193,12 @@ public abstract class AbstractCommand implements Command {
      * @return "cd /xx/xx;"
      */
     protected String getFormatExecutionDirectory() {
-        if (!ObjectUtils.isEmpty(this.executionDirectory)) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(LittleBeeConstant.SSH_CD);
-            buffer.append(LittleBeeConstant.SPACE);
-            buffer.append(this.executionDirectory);
-            buffer.append(LittleBeeConstant.SEMICOLON);
-            return buffer.toString();
-        }
-        return LittleBeeConstant.EMPTY_STRING;
+        StringBuffer buffer = new StringBuffer(LittleBeeConstant.EMPTY_STRING);
+        buffer.append(LittleBeeConstant.SSH_CD);
+        buffer.append(LittleBeeConstant.SPACE);
+        buffer.append(getExecutionDirectory());
+        buffer.append(LittleBeeConstant.SEMICOLON);
+        return buffer.toString();
     }
 
     /**
@@ -175,14 +225,14 @@ public abstract class AbstractCommand implements Command {
     }
 
     /**
-     * Get the prefix of the command line
+     * Get authentication information for connecting to a remote server
      * <p>
      * prefix only exists when accessing remote server
      * the format is "ssh username@serverIp"
      *
      * @return The command line prefix string
      */
-    protected String getCommandLinePrefix() {
+    protected String getRemoteAuthenticate() {
         if (isRemoteExecution()) {
             Authenticate authenticate = getAuthenticate();
             String connection = authenticate.getConnectionInformation();
@@ -194,6 +244,66 @@ public abstract class AbstractCommand implements Command {
             return buffer.toString();
         }
         return LittleBeeConstant.EMPTY_STRING;
+    }
+
+    /**
+     * Formatting the bash command line
+     * <p>
+     * options when appending a format command
+     *
+     * @return formatted base command
+     */
+    private String formatBashCommand() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getBash());
+        buffer.append(LittleBeeConstant.SPACE);
+        buffer.append(getFormatOptions());
+        return buffer.toString();
+    }
+
+    /**
+     * Formatting command execution non-blocking
+     * <p>
+     * If the command is executed in non-blocking mode, append nohup "command line" > command.log 2>&1 &
+     *
+     * @return formatted non-blocking command
+     */
+    private String formatNonBlocking() {
+        StringBuffer buffer = new StringBuffer();
+        if (!blocking) {
+            buffer.append(LittleBeeConstant.SSH_NO_HUP);
+            buffer.append(LittleBeeConstant.SPACE);
+        }
+        buffer.append(formatBashCommand());
+        if (!blocking) {
+            buffer.append(LittleBeeConstant.DIRECTION);
+            buffer.append(nonBlocking.getLogFilePosition());
+            buffer.append(nonBlocking.getLogFileName());
+            buffer.append(LittleBeeConstant.SPACE);
+            buffer.append(LittleBeeConstant.NO_HUP_SUFFIX);
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * Formatting remote execution command
+     * <p>
+     * If there is a remote execution command, execute append "cd execute-directory"
+     *
+     * @return formatted remote execution command
+     */
+    private String formatRemoteExecution() {
+        StringBuffer buffer = new StringBuffer();
+        if (remoteExecution) {
+            buffer.append(LittleBeeConstant.QUOTE);
+        }
+        if (!ObjectUtils.isEmpty(this.executionDirectory)) {
+            buffer.append(getFormatExecutionDirectory());
+        }
+        String command = formatNonBlocking();
+        buffer.append(command);
+        buffer.append(LittleBeeConstant.QUOTE);
+        return buffer.toString();
     }
 
     /**
@@ -209,17 +319,28 @@ public abstract class AbstractCommand implements Command {
      */
     protected String getCommandLine() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(getCommandLinePrefix());
-        if (this.remoteExecution) {
-            buffer.append(LittleBeeConstant.QUOTE);
+        buffer.append(getRemoteAuthenticate());
+        String command = formatRemoteExecution();
+        buffer.append(command);
+        String commandLine = buffer.toString();
+        if (logger.isDebugEnabled()) {
+            logger.debug("Execute the command after formatting：{}", commandLine);
         }
-        buffer.append(getFormatExecutionDirectory());
-        buffer.append(getBash());
-        buffer.append(LittleBeeConstant.SPACE);
-        buffer.append(getFormatOptions());
-        if (this.remoteExecution) {
-            buffer.append(LittleBeeConstant.QUOTE);
-        }
-        return buffer.toString();
+        return commandLine;
     }
+
+    /**
+     * CommandResponseType according to {@link #blocking}
+     *
+     * @return command response type
+     */
+    private CommandResponseType covertResponseType() {
+        CommandResponseType responseType = CommandResponseType.NON_BLOCKING;
+        if (blocking) {
+            responseType = CommandResponseType.BLOCKING;
+        }
+        return responseType;
+    }
+
+
 }
