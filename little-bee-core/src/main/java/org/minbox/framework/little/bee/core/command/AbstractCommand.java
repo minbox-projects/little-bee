@@ -304,7 +304,9 @@ public abstract class AbstractCommand implements Command {
         }
         String command = formatNonBlocking();
         buffer.append(command);
-        buffer.append(LittleBeeConstant.QUOTE);
+        if (remoteExecution) {
+            buffer.append(LittleBeeConstant.QUOTE);
+        }
         return buffer.toString();
     }
 
