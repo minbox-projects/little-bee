@@ -40,12 +40,16 @@ public interface CommandResponse {
      *
      * @return command execution response content
      */
-    String getRawContent();
+    default String getRawContent() {
+        return null;
+    }
 
     /**
      * Write response content to file
      *
      * @param file target file instance
      */
-    void writeToFile(File file);
+    default void writeToFile(File file) {
+
+    }
 }
