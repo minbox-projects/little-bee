@@ -1,5 +1,6 @@
 package org.minbox.framework.little.bee.core.command.response;
 
+import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.minbox.framework.little.bee.core.command.CommandNonBlocking;
 
 import java.io.File;
@@ -47,9 +48,20 @@ public interface CommandResponse {
     /**
      * Write response content to file
      *
-     * @param file target file instance
+     * @param filePath target file path
+     * @throws LittleBeeCommandException
      */
-    default void writeToFile(File file) {
+    default void writeToFile(String filePath) throws LittleBeeCommandException {
+
+    }
+
+    /**
+     * Write response content to file
+     *
+     * @param file target file instance
+     * @throws LittleBeeCommandException
+     */
+    default void writeToFile(File file) throws LittleBeeCommandException {
 
     }
 }
