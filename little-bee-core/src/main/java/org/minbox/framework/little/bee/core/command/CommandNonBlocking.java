@@ -44,7 +44,10 @@ public class CommandNonBlocking {
      * @return The default position is "~/.little-bee/logs"
      */
     private static String getDefaultPosition() {
-        return LittleBeeConstant.LITTLE_BEE_DIR + LOG_SUB_PATH;
+        return String.format("%s/%s%s",
+            System.getProperty(LittleBeeConstant.USER_HOME),
+            LittleBeeConstant.LITTLE_BEE_DIR,
+            LOG_SUB_PATH);
     }
 
     /**
