@@ -137,7 +137,9 @@ public abstract class AbstractCommand implements Command {
             CommandResponseType responseType = covertResponseType();
             response = CommandResponseFactory.instance(responseType);
             response.setProcess(process);
-            response.setCommandNonBlocking(nonBlocking);
+            if (!blocking) {
+                response.setCommandNonBlocking(nonBlocking);
+            }
         } catch (Exception e) {
             throw new LittleBeeCommandException(e.getMessage(), e);
         }
