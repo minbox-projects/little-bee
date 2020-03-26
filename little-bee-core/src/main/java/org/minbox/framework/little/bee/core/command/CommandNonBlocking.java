@@ -104,7 +104,26 @@ public class CommandNonBlocking {
         return logFileName + LOG_FILE_SUFFIX;
     }
 
+    /**
+     * Get log file position directory
+     * <p>
+     * append if position does not end with "/"
+     *
+     * @return log file position
+     */
     public String getLogFilePosition() {
+        if (!logFilePosition.endsWith(LittleBeeConstant.SLASH)) {
+            logFilePosition = logFilePosition + LittleBeeConstant.SLASH;
+        }
         return logFilePosition;
+    }
+
+    /**
+     * Get the full path of the log file
+     *
+     * @return The log file path
+     */
+    public String getLogFilePath() {
+        return getLogFilePosition() + getLogFileName();
     }
 }
