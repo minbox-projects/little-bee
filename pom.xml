@@ -20,6 +20,7 @@
         <module>little-bee-admin-ui</module>
         <module>little-bee-starters</module>
         <module>little-bee-dependencies</module>
+        <module>little-bee-samples</module>
     </modules>
     <description>
         Little Bee 是一款"DevOps"与"服务治理"的管理工具，为高效可持续部署做全面支持
