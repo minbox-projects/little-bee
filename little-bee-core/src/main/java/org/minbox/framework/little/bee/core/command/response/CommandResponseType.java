@@ -11,9 +11,13 @@ public enum CommandResponseType {
      */
     BLOCKING("org.minbox.framework.little.bee.core.command.response.CommandBlockingResponse"),
     /**
-     * non-blocking response type
+     * nohup non-blocking response type
      */
-    NON_BLOCKING("org.minbox.framework.little.bee.core.command.response.CommandNonBlockingResponse");
+    NOHUP_NON_BLOCKING("org.minbox.framework.little.bee.core.command.response.CommandNonBlockingResponse"),
+    /**
+     * thread pool non-blocking response type
+     */
+    THREAD_POOL_NON_BLOCKING("org.minbox.framework.little.bee.core.command.response.CommandThreadPoolNonBlockingResponse");
     /**
      * The full path name of the enum value corresponding to {@link CommandResponse}
      */
@@ -25,5 +29,16 @@ public enum CommandResponseType {
 
     public String getResponseClassName() {
         return responseClassName;
+    }
+
+    /**
+     * Determine if the two match
+     *
+     * @param responseType Current command response type
+     * @param checkType    Command response type being checked
+     * @return Matches both when the return value is <code>true</code>
+     */
+    public static boolean isMatch(CommandResponseType responseType, CommandResponseType checkType) {
+        return responseType == checkType;
     }
 }

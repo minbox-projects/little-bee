@@ -1,5 +1,8 @@
 package org.minbox.framework.little.bee.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Public constant definition
  * <p>
@@ -52,4 +55,53 @@ public interface LittleBeeConstant {
      * java system variable current user home directory
      */
     String USER_HOME = "user.home";
+    /**
+     * slash
+     */
+    String SLASH = "/";
+    /**
+     * new line
+     */
+    String NEW_LINE = "\n";
+    /**
+     * The note dividing line
+     */
+    String NOTE_DIVIDING_LINE = "---";
+    /**
+     * The note collection
+     */
+    List<String> NOTES = new ArrayList() {
+        {
+            add(NOTE_COMMAND);
+            add(NOTE_START_TIME);
+            add(NOTE_END_TIME);
+            add(NOTE_TIME_CONSUMING);
+            add(NOTE_REMOTE_EXECUTION);
+            add(NOTE_EXECUTION_DIRECTORY);
+        }
+    };
+    /**
+     * The note of command line
+     */
+    String NOTE_COMMAND = "command";
+    /**
+     * The note of command execution start time
+     */
+    String NOTE_START_TIME = "startTime";
+    /**
+     * The note of command execution end time
+     */
+    String NOTE_END_TIME = "endTime";
+    /**
+     * The note of command execution time consuming
+     */
+    String NOTE_TIME_CONSUMING = "timeConsuming";
+    /**
+     * The note of command is remote execution
+     */
+    String NOTE_REMOTE_EXECUTION = "remoteExecution";
+    /**
+     * The note of command execution directory
+     */
+    String NOTE_EXECUTION_DIRECTORY = "executionDirectory";
 }
