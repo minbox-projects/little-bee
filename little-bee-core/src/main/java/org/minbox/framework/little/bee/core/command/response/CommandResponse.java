@@ -1,9 +1,8 @@
 package org.minbox.framework.little.bee.core.command.response;
 
-import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.minbox.framework.little.bee.core.command.CommandNonBlocking;
 
-import java.io.File;
+import java.util.Map;
 
 /**
  * Command line response
@@ -16,20 +15,6 @@ import java.io.File;
  */
 public interface CommandResponse {
     /**
-     * Set the response instance after {@link Runtime} execution {@link Process}
-     *
-     * @param process The Runtime execution response isntance
-     */
-    void setProcess(Process process);
-
-    /**
-     * Set non-blocking command configuration
-     *
-     * @param commandNonBlocking non-blocking command configuration
-     */
-    void setCommandNonBlocking(CommandNonBlocking commandNonBlocking);
-
-    /**
      * Get non-blocking command configuration
      *
      * @return non-blocking command configuration
@@ -38,6 +23,9 @@ public interface CommandResponse {
 
     /**
      * Get content after command execution
+     * <p>
+     * you can use this method to get the response content
+     * only after executing the command in {@link CommandResponseType#BLOCKING} mode.
      *
      * @return command execution response content
      */
@@ -46,22 +34,16 @@ public interface CommandResponse {
     }
 
     /**
-     * Write response content to file
+     * Get command execution response notes
+     * <p>
+     * get the notes after the command is executed.
+     * if the command execution response type is {@link CommandResponseType#BLOCKING},
+     * you need to call this method after the {@link #getRawContent()} method
+     * <p>
+     * if the command execution response type is {@link CommandResponseType#THREAD_POOL_NON_BLOCKING},
+     * notes are written to the bottom of the command log file
      *
-     * @param filePath target file path
-     * @throws LittleBeeCommandException
+     * @return
      */
-    default void writeToFile(String filePath) throws LittleBeeCommandException {
-
-    }
-
-    /**
-     * Write response content to file
-     *
-     * @param file target file instance
-     * @throws LittleBeeCommandException
-     */
-    default void writeToFile(File file) throws LittleBeeCommandException {
-
-    }
+    Map<String, String> getNotes();
 }
