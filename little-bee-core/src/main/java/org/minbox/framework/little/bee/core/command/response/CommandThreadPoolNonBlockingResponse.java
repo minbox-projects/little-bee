@@ -57,6 +57,8 @@ public class CommandThreadPoolNonBlockingResponse extends AbstractCommandRespons
 
     /**
      * Create a command response log file
+     * <p>
+     * when creating a log file, create the parent directory of the file
      *
      * @throws LittleBeeCommandException Problems encountered in executing the command
      */
