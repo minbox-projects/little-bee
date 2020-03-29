@@ -11,6 +11,19 @@ import java.io.*;
  */
 public class FileTools {
     /**
+     * Create a directory
+     *
+     * @param dirPath directory path
+     * @throws IOException File io exception
+     */
+    public static void createDirectory(String dirPath) {
+        File file = new File(dirPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+
+    /**
      * Create a new file
      *
      * @param filePath          The file full path
