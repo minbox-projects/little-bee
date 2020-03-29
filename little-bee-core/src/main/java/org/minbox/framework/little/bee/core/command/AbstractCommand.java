@@ -5,11 +5,12 @@ import com.sun.org.slf4j.internal.LoggerFactory;
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.minbox.framework.little.bee.core.LittleBeeConstant;
 import org.minbox.framework.little.bee.core.authenticate.Authenticate;
-import org.minbox.framework.little.bee.core.command.response.*;
+import org.minbox.framework.little.bee.core.command.response.AbstractCommandResponse;
+import org.minbox.framework.little.bee.core.command.response.CommandResponse;
+import org.minbox.framework.little.bee.core.command.response.CommandResponseFactory;
+import org.minbox.framework.little.bee.core.command.response.CommandResponseType;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
-
-import java.io.File;
 
 /**
  * Abstract implementation of the {@link Command} interface
@@ -135,10 +136,10 @@ public abstract class AbstractCommand implements Command {
      * Before executing the command
      * <p>
      * handle some necessary validation and business before executing the command
+     * <p>
+     * this method is called before the command is executed and can be used to construct command parameters
      */
-    private void preExecute() {
-        createNonBlockLogDir();
-    }
+    abstract void preExecute();
 
     /**
      * Execution command line
@@ -370,18 +371,5 @@ public abstract class AbstractCommand implements Command {
         return commandLine;
     }
 
-    /**
-     * Create non-blocking command response log directory
-     * <p>
-     * create directory if it does not exist
-     */
-    private void createNonBlockLogDir() {
-        if (CommandResponseType.isMatch(responseType, CommandResponseType.THREAD_POOL_NON_BLOCKING)) {
-            File file = new File(nonBlocking.getLogFilePosition());
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-        }
-    }
 
 }
