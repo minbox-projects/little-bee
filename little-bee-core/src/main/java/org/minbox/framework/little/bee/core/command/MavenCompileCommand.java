@@ -10,7 +10,8 @@ package org.minbox.framework.little.bee.core.command;
  * @author 恒宇少年
  */
 public class MavenCompileCommand extends MavenCommand {
-    public MavenCompileCommand() {
+    @Override
+    public void preExecute() {
         setCommandOptions(new String[]{MAVEN_CLEAN, MAVEN_COMPILE});
     }
 }
