@@ -255,7 +255,11 @@ public abstract class AbstractCommand implements Command {
         if (!ObjectUtils.isEmpty(this.options)) {
             StringBuffer buffer = new StringBuffer();
             for (int i = 0; i < options.length; i++) {
-                buffer.append(options[i]);
+                String option = options[i];
+                if (ObjectUtils.isEmpty(option)) {
+                    continue;
+                }
+                buffer.append(option);
                 buffer.append(i == options.length - 1 ? LittleBeeConstant.EMPTY_STRING : LittleBeeConstant.SPACE);
             }
             return buffer.toString();
