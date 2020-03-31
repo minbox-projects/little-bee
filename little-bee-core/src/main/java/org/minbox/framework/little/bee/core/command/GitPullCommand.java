@@ -5,6 +5,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Git pull command implementation
@@ -70,7 +72,8 @@ public class GitPullCommand extends GitCommand {
         String projectPath = getProjectDirectory() + projectName;
         checkProjectExist(projectPath);
         setExecutionDirectory(projectPath);
-        setCommandOptions(new String[]{GIT_PULL, remote, branch});
+        List<String> options = getGitPullOptions();
+        setCommandOptions(options.stream().toArray(String[]::new));
     }
 
     /**
@@ -85,5 +88,18 @@ public class GitPullCommand extends GitCommand {
         if (!file.exists() || !file.isDirectory()) {
             throw new LittleBeeCommandException("Project \"" + projectPath + "\" does not exist");
         }
+    }
+
+    /**
+     * Get "git pull" command options
+     *
+     * @return command options
+     */
+    private List<String> getGitPullOptions() {
+        List<String> options = new LinkedList<>();
+        options.add(GIT_PULL);
+        options.add(this.remote);
+        options.add(this.branch);
+        return options;
     }
 }
