@@ -64,6 +64,10 @@ public interface LittleBeeConstant {
      */
     String NEW_LINE = "\n";
     /**
+     * Recursive copy option
+     */
+    String RECURSIVE_COPY = "-r";
+    /**
      * The note dividing line
      */
     String NOTE_DIVIDING_LINE = "---";

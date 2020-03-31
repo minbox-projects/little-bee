@@ -13,7 +13,7 @@
 
     <!--Properties List-->
     <properties>
-        <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
+        <spring.boot.version>2.2.6.RELEASE</spring.boot.version>
         <lombok.version>1.18.10</lombok.version>
         <alibaba-fastjson.version>1.2.60</alibaba-fastjson.version>
     </properties>
@@ -25,6 +25,11 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.minbox.framework</groupId>
+                <artifactId>little-bee-core</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
