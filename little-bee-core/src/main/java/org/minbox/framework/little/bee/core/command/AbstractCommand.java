@@ -174,7 +174,17 @@ public abstract class AbstractCommand implements Command {
         return authenticate;
     }
 
+    /**
+     * Get command bash
+     * <p>
+     * If bash is not set, throw an exception alert
+     *
+     * @return command bash
+     */
     private String getBash() {
+        if (ObjectUtils.isEmpty(this.bash)) {
+            throw new LittleBeeCommandException("The command bash is not set.");
+        }
         return bash;
     }
 
@@ -263,6 +273,8 @@ public abstract class AbstractCommand implements Command {
                 buffer.append(i == options.length - 1 ? LittleBeeConstant.EMPTY_STRING : LittleBeeConstant.SPACE);
             }
             return buffer.toString();
+        } else {
+            logger.warn("Options are not set when the command is executed, is it unnecessary?");
         }
         return LittleBeeConstant.EMPTY_STRING;
     }
