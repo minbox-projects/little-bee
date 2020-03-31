@@ -3,6 +3,9 @@ package org.minbox.framework.little.bee.core.command;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Git clone command implementation
  *
@@ -46,12 +49,29 @@ public class GitCloneCommand extends GitCommand {
     @Override
     void preExecute() {
         Assert.notNull(this.projectAddress, "The address of the clone project cannot be null.");
-        String cloneBranch = String.format(GIT_BRANCH, branch);
         String projectStorageDirectory = getProjectDirectory();
         if (!projectStorageDirectory.equals(getExecutionDirectory())) {
             setExecutionDirectory(projectStorageDirectory);
         }
         createProjectDirectory(projectStorageDirectory);
-        setCommandOptions(new String[]{GIT_CLONE, cloneBranch, projectAddress});
+        List<String> options = getGitCloneOptions();
+        setCommandOptions(options.stream().toArray(String[]::new));
+    }
+
+    /**
+     * Get "git clone" command options
+     *
+     * @return command options
+     */
+    private List<String> getGitCloneOptions() {
+        List<String> options = new LinkedList<>();
+        // add "clone" option
+        options.add(GIT_CLONE);
+        // add "-b" option
+        String cloneBranch = String.format(GIT_BRANCH, branch);
+        options.add(cloneBranch);
+        // add project git address
+        options.add(this.projectAddress);
+        return options;
     }
 }
