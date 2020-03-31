@@ -4,6 +4,8 @@ import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * Create directory command implementation
+ *
  * @author 恒宇少年
  */
 public class ServerMkdirCommand extends ServerCommand {
