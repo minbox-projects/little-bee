@@ -20,6 +20,10 @@ public interface LittleBeeConstant {
      */
     String SPACE = " ";
     /**
+     * Assignment EQ
+     */
+    String ASSIGNMENT_EQ = "=";
+    /**
      * The "ssh" bash
      */
     String SSH_BASH = "ssh";
@@ -108,4 +112,17 @@ public interface LittleBeeConstant {
      * The note of command execution directory
      */
     String NOTE_EXECUTION_DIRECTORY = "executionDirectory";
+
+    /**
+     * The jvm option kb unit size
+     */
+    String JVM_OPTION_KB_SUFFIX = "k";
+    /**
+     * The jvm option mb unit size
+     */
+    String JVM_OPTION_MB_SUFFIX = "m";
+    /**
+     * The jvm option gb unit size
+     */
+    String JVM_OPTION_GB_SUFFIX = "g";
 }
