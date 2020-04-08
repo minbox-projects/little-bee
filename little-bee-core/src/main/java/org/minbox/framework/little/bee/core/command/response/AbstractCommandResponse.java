@@ -1,14 +1,17 @@
 package org.minbox.framework.little.bee.core.command.response;
 
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
+import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.minbox.framework.little.bee.core.LittleBeeConstant;
 import org.minbox.framework.little.bee.core.command.AbstractCommand;
 import org.minbox.framework.little.bee.core.command.CommandNonBlocking;
+import org.minbox.framework.little.bee.core.tools.FileTools;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The {@link CommandResponse} instance abstract implement
@@ -16,6 +19,10 @@ import java.util.Map;
  * @author 恒宇少年
  */
 public abstract class AbstractCommandResponse implements CommandResponse {
+    /**
+     * logger instance
+     */
+    static Logger logger = LoggerFactory.getLogger(AbstractCommandResponse.class);
     /**
      * The {@link Runtime} execution response
      */
@@ -101,6 +108,15 @@ public abstract class AbstractCommandResponse implements CommandResponse {
         return this.timeConsuming;
     }
 
+
+    protected Process getProcess() {
+        return process;
+    }
+
+    protected AbstractCommand getCommand() {
+        return this.command;
+    }
+
     @Override
     public CommandNonBlocking getNonBlocking() {
         return command.getCommandNonBlocking();
@@ -121,6 +137,67 @@ public abstract class AbstractCommandResponse implements CommandResponse {
         notes.put(LittleBeeConstant.NOTE_REMOTE_EXECUTION, String.valueOf(this.command.isRemoteExecution()));
         notes.put(LittleBeeConstant.NOTE_EXECUTION_DIRECTORY, this.command.getExecutionDirectory());
         return notes;
+    }
+
+
+    /**
+     * Convert notes
+     * <p>
+     * beautify the output of notes to a log file
+     *
+     * @param notes The command notes
+     * @return Beautified notes
+     */
+    protected List<String> convertNotes(Map<String, String> notes) {
+        Iterator<String> iterator = notes.keySet().iterator();
+        List<String> formatNotes = new LinkedList<>();
+        formatNotes.add(LittleBeeConstant.NOTE_DIVIDING_LINE);
+        formatNotes.add(LittleBeeConstant.NEW_LINE);
+        while (iterator.hasNext()) {
+            String noteKey = iterator.next();
+            String noteValue = notes.get(noteKey);
+            formatNotes.add(String.format("%s: %s", noteKey, noteValue));
+            formatNotes.add(LittleBeeConstant.NEW_LINE);
+        }
+        formatNotes.add(LittleBeeConstant.NOTE_DIVIDING_LINE);
+        return formatNotes;
+    }
+
+    /**
+     * Create a command response log file
+     * <p>
+     * when creating a log file, create the parent directory of the file
+     *
+     * @throws LittleBeeCommandException Problems encountered in executing the command
+     */
+    private void createLogFile() throws LittleBeeCommandException {
+        try {
+            CommandNonBlocking commandNonBlocking = getNonBlocking();
+            FileTools.createFile(commandNonBlocking.getLogFilePath(), true);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Create log file : {}", commandNonBlocking.getLogFilePath());
+            }
+        } catch (Exception e) {
+            throw new LittleBeeCommandException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Append lines content to log file
+     *
+     * @param lines The log content lines
+     * @throws LittleBeeCommandException Problems encountered in executing the command
+     */
+    protected void appendLinesToLogFile(String... lines) throws LittleBeeCommandException {
+        try {
+            String filePath = getNonBlocking().getLogFilePath();
+            if (!FileTools.checkExist(filePath)) {
+                createLogFile();
+            }
+            FileTools.writeLines(filePath, lines);
+        } catch (Exception e) {
+            throw new LittleBeeCommandException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -146,14 +223,6 @@ public abstract class AbstractCommandResponse implements CommandResponse {
         return content;
     }
 
-    protected Process getProcess() {
-        return process;
-    }
-
-    protected AbstractCommand getCommand() {
-        return this.command;
-    }
-
     /**
      * Method to execute when starting to load log content
      * <p>
@@ -172,5 +241,8 @@ public abstract class AbstractCommandResponse implements CommandResponse {
     protected void afterLoading() {
         this.endTime = System.currentTimeMillis();
         this.timeConsuming = this.endTime - this.startTime;
+        Map<String, String> notes = getNotes();
+        List<String> formatNotes = convertNotes(notes);
+        this.appendLinesToLogFile(formatNotes.toArray(new String[]{}));
     }
 }
