@@ -78,7 +78,16 @@ public class FileTools {
                 throw e;
             }
         }
+    }
 
-
+    /**
+     * Check file or directory exist
+     *
+     * @param filePath file or directory path
+     * @return Return true if present
+     */
+    public static boolean checkExist(String filePath) {
+        File file = new File(filePath);
+        return file.exists();
     }
 }
