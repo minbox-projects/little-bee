@@ -108,6 +108,14 @@ public class ServiceBootCommand extends ServiceCommand {
         this.gc = gc;
     }
 
+    /**
+     * If you do not use the default JvmOptions,
+     * set false by this method
+     */
+    public void disableDefaultJvmOptions() {
+        this.isUseDefaultOptions = false;
+    }
+
     public ServiceBootCommand() {
         setBash(JAVA_BASH);
     }
