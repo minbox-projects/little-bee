@@ -53,6 +53,15 @@ public interface JvmOption {
     void setValue(String value);
 
     /**
+     * Get jvm option name
+     * <p>
+     * use option name to determine uniqueness
+     *
+     * @return option name
+     */
+    String getOptionName();
+
+    /**
      * Get formatted jvm option value
      *
      * @return formatted jvm option
