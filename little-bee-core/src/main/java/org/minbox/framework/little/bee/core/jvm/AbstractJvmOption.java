@@ -15,14 +15,6 @@ public abstract class AbstractJvmOption implements JvmOption {
 
     /**
      * The subclass implements this method,
-     * and the subclass passes the {@link #optionValue} through this method
-     *
-     * @return The jvm option name
-     */
-    public abstract String getOptionName();
-
-    /**
-     * The subclass implements this method,
      * and the subclass passes the {@link JvmOptionType} through this method
      *
      * @return
