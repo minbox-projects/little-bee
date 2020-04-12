@@ -6,7 +6,9 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-XX:SurvivorRatio" jvm option
- * <pre class="code">
+ * <p>
+ * Use example:
+ * <pre>
  *     String survivorRatio = JvmOptionFactory.getJvmOption(JvmSurvivorRatioOption.class,"8").format();
  *     // -XX:SurvivorRatio=8
  *     System.out.println(survivorRatio);

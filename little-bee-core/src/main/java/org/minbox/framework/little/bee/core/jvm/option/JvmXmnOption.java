@@ -5,7 +5,9 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-Xmn" jvm option
- * <pre class="code">
+ * <p>
+ * Use example:
+ * <pre>
  *      String xmn = JvmOptionFactory.getJvmOption(JvmXmnOption.class,
  *             JvmOptionSize.MB.value(1024).toString()).format();
  *      // -Xmn1024m

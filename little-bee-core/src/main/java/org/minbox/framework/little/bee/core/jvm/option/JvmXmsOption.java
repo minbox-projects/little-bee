@@ -5,11 +5,14 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-Xms" jvm option
- * <pre class="code">
- *     String xms = JvmOptionFactory.getJvmOption(JvmXmsOption.class,
- *             JvmOptionSize.MB.value(256).toString()).format();
- *     // -Xms256m
- *     System.out.println(xms);
+ * <p>
+ * Use example:
+ * <pre>
+ *     public static void main(String[] args) {
+ *         String xms = JvmOptionFactory.getJvmOption(JvmXmsOption.class, JvmOptionSize.MB.value(256).toString()).format();
+ *         // -Xms256m
+ *         System.out.println(xms);
+ *     }
  * </pre>
  *
  * @author 恒宇少年

@@ -5,7 +5,9 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-Xss" jvm option
- * <pre class="code">
+ * <p>
+ * Use example:
+ * <pre>
  *      String xss = JvmOptionFactory.getJvmOption(JvmXssOption.class,
  *             JvmOptionSize.KB.value(256).toString()).format();
  *      // -Xss256k

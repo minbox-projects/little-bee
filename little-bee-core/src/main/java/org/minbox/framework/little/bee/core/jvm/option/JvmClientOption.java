@@ -5,9 +5,14 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-client" jvm option
- * <pre class="code">
- *      String client = JvmOptionFactory.getJvmOption(JvmClientOption.class, LittleBeeConstant.EMPTY_STRING).format();
- *      System.out.println(client);
+ * <p>
+ * Use example:
+ * <pre>
+ *     public static void main(String[] args){
+ *         String client = JvmOptionFactory.getJvmOption(JvmClientOption.class, LittleBeeConstant.EMPTY_STRING).format();
+ *         // -client
+ *         System.out.println(client);
+ *     }
  * </pre>
  *
  * @author 恒宇少年

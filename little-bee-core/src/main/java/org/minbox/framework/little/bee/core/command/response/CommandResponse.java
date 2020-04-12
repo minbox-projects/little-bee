@@ -43,7 +43,7 @@ public interface CommandResponse {
      * if the command execution response type is {@link CommandResponseType#THREAD_POOL_NON_BLOCKING},
      * notes are written to the bottom of the command log file
      *
-     * @return
+     * @return command execution response notes map
      */
     Map<String, String> getNotes();
 }

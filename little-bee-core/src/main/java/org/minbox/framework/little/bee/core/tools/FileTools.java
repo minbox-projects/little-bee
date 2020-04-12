@@ -14,7 +14,6 @@ public class FileTools {
      * Create a directory
      *
      * @param dirPath directory path
-     * @throws IOException File io exception
      */
     public static void createDirectory(String dirPath) {
         File file = new File(dirPath);

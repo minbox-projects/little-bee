@@ -5,7 +5,9 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-server" jvm option
- * <pre class="code>
+ * <p>
+ * Use example:
+ * <pre>
  *     String server = JvmOptionFactory.getJvmOption(JvmServerOption.class, LittleBeeConstant.EMPTY_STRING).format();
  *     // -server
  *     System.out.println(server);
