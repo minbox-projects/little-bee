@@ -17,7 +17,7 @@ public abstract class AbstractJvmOption implements JvmOption {
      * The subclass implements this method,
      * and the subclass passes the {@link JvmOptionType} through this method
      *
-     * @return
+     * @return The {@link JvmOptionType}
      */
     public abstract JvmOptionType getOptionType();
 

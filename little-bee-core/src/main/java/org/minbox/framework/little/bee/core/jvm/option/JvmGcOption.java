@@ -6,7 +6,9 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The {@link org.minbox.framework.little.bee.core.jvm.JvmGc} jvm option
- * <pre class="code">
+ * <p>
+ * Use example:
+ * <pre>
  *   String gc = JvmOptionFactory.getJvmOption(JvmGcOption.class, JvmGc.UseConcMarkSweepGC.getValue()).format();
  *   // -XX:+UseConcMarkSweepGC
  *   System.out.println(gc);

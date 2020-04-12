@@ -6,7 +6,9 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-XX:MetaspaceSize" jvm option
- * <pre class="code">
+ * <p>
+ * Use example:
+ * <pre>
  *     String metaSpaceSize = JvmOptionFactory.getJvmOption(JvmMetaSpaceSizeOption.class,
  *          JvmOptionSize.MB.value(128).toString()).format();
  *     // -XX:MetaspaceSize=128m

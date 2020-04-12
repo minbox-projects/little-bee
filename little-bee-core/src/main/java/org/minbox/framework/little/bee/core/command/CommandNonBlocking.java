@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * Non-blocking configuration from the command line
  * <p>
- * for example: nohup "command line" > command.log 2>&1 &
+ * for example: nohup "command line" &gt; command.log 2&gt;&amp;1 &amp;
  *
  * @author 恒宇少年
  */

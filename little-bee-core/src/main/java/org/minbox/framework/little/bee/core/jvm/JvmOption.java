@@ -6,20 +6,20 @@ package org.minbox.framework.little.bee.core.jvm;
  * If you need to customize the Jvm Option,
  * you can accomplish this by implementing {@link JvmOption}.
  * Example "-XX:NewRatio":
- * <pre class="code">
+ * <pre>
  *     public class NewRatio extends AbstractJvmOption {
  *
- *     @Override
+ *     &#64;Override
  *     public String getOptionName() {
  *         return "NewRatio";
  *     }
  *
- *     @Override
+ *     &#64;Override
  *     public String getAssignmentSymbol() {
  *         return super.getAssignmentSymbol();
  *     }
  *
- *     @Override
+ *     &#64;Override
  *     public JvmOptionType getOptionType() {
  *         return JvmOptionType.NonStable;
  *     }

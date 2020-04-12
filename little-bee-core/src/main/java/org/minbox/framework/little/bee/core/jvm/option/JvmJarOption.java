@@ -5,7 +5,9 @@ import org.minbox.framework.little.bee.core.jvm.JvmOptionType;
 
 /**
  * The "-jar" jvm option
- * <pre class="code>
+ * <p>
+ * Use example:
+ * <pre>
  *     String jar = JvmOptionFactory.getJvmOption(JvmJarOption.class, LittleBeeConstant.EMPTY_STRING).format();
  *     // -jar
  *     System.out.println(jar);

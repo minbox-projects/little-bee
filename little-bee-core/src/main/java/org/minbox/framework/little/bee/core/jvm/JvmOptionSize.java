@@ -32,7 +32,7 @@ public abstract class JvmOptionSize {
      * init {@link JvmOptionSize} instance
      *
      * @param value Jvm option size value
-     * @return
+     * @return current instance
      */
     public JvmOptionSize value(int value) {
         this.value = value;
