@@ -1,7 +1,5 @@
 package org.minbox.framework.little.bee.core.tools;
 
-import org.springframework.util.ObjectUtils;
-
 import java.io.*;
 
 /**
@@ -59,7 +57,7 @@ public class FileTools {
      * @throws IOException File io exception
      */
     public static void writeLines(String filePath, String... lines) throws IOException {
-        if (ObjectUtils.isEmpty(lines)) {
+        if (ObjectTools.isEmpty(lines)) {
             return;
         }
         BufferedWriter writer = null;
