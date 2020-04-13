@@ -2,14 +2,41 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>little-bee</artifactId>
+  <parent>
+    <artifactId>little-bee</artifactId>
+    <groupId>org.minbox.framework</groupId>
+    <version>${revision}</version>
+  </parent>
+  <packaging>jar</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <description>
+    The static files of the UI required by the "Little Bee" management platform
+  </description>
+  <artifactId>little-bee-admin-ui</artifactId>
+  <build>
+    <plugins>
+      <plugin>
         <groupId>org.minbox.framework</groupId>
-        <version>${revision}</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>little-bee-admin-ui</artifactId>
-
-
+        <artifactId>command-execute-maven-plugin</artifactId>
+        <version>0.2.0.RELEASE</version>
+        <executions>
+          <execution>
+            <id>npm build prod</id>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <executable>npm run build:prod</executable>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>dist</directory>
+        <targetPath>META-INF/resources</targetPath>
+      </resource>
+    </resources>
+  </build>
 </project>

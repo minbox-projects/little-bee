@@ -1,8 +1,8 @@
 package org.minbox.framework.little.bee.core.command;
 
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
+import org.minbox.framework.little.bee.core.tools.Assert;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -33,7 +33,7 @@ public class GitPullCommand extends GitCommand {
      * @param remote remote name
      */
     public void setRemote(String remote) {
-        if (!ObjectUtils.isEmpty(remote)) {
+        if (!ObjectTools.isEmpty(remote)) {
             this.remote = remote;
         }
     }
@@ -53,7 +53,7 @@ public class GitPullCommand extends GitCommand {
      * @param branch project branch name
      */
     public void setBranch(String branch) {
-        if (!ObjectUtils.isEmpty(branch)) {
+        if (!ObjectTools.isEmpty(branch)) {
             this.branch = branch;
         }
     }

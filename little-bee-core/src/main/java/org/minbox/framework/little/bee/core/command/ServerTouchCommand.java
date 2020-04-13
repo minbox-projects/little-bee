@@ -1,7 +1,7 @@
 package org.minbox.framework.little.bee.core.command;
 
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
-import org.springframework.util.ObjectUtils;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
 
 /**
  * Create file "touch" command implementation
@@ -41,7 +41,7 @@ public class ServerTouchCommand extends ServerCommand {
      * @throws LittleBeeCommandException Exception thrown by validation data
      */
     private void checkValidity() throws LittleBeeCommandException {
-        if (ObjectUtils.isEmpty(this.file)) {
+        if (ObjectTools.isEmpty(this.file)) {
             throw new LittleBeeCommandException("The file cannot be null.");
         }
     }

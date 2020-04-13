@@ -1,7 +1,7 @@
 package org.minbox.framework.little.bee.core.command;
 
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
+import org.minbox.framework.little.bee.core.tools.Assert;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class GitCloneCommand extends GitCommand {
      * @param branch project branch name
      */
     public void setBranch(String branch) {
-        if (!ObjectUtils.isEmpty(branch)) {
+        if (!ObjectTools.isEmpty(branch)) {
             this.branch = branch;
         }
     }

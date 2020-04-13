@@ -1,7 +1,7 @@
 package org.minbox.framework.little.bee.core.jvm;
 
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
-import org.springframework.util.Assert;
+import org.minbox.framework.little.bee.core.tools.Assert;
 
 /**
  * The {@link JvmOption} subclass factory

@@ -2,7 +2,7 @@ package org.minbox.framework.little.bee.core.command;
 
 import org.minbox.framework.little.bee.core.LittleBeeConstant;
 import org.minbox.framework.little.bee.core.tools.FileTools;
-import org.springframework.util.ObjectUtils;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
 
 /**
  * @author 恒宇少年
@@ -44,7 +44,7 @@ public abstract class GitCommand extends AbstractCommand {
      */
     protected String getProjectDirectory() {
         String directory = getExecutionDirectory();
-        if (ObjectUtils.isEmpty(directory)) {
+        if (ObjectTools.isEmpty(directory)) {
             String defaultExecutionDirectory = String.format("%s/%s%s",
                 System.getProperty(LittleBeeConstant.USER_HOME),
                 LittleBeeConstant.LITTLE_BEE_DIR,

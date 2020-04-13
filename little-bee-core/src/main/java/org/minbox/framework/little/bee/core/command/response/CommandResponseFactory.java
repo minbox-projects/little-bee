@@ -3,7 +3,7 @@ package org.minbox.framework.little.bee.core.command.response;
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
+import org.minbox.framework.little.bee.core.tools.Assert;
 
 /**
  * Command line execution response factory
