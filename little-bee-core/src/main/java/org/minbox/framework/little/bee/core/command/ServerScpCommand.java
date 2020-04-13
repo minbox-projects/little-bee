@@ -2,8 +2,8 @@ package org.minbox.framework.little.bee.core.command;
 
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
 import org.minbox.framework.little.bee.core.LittleBeeConstant;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
+import org.minbox.framework.little.bee.core.tools.StringTools;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -118,10 +118,10 @@ public class ServerScpCommand extends ServerCommand {
      * @throws LittleBeeCommandException Check validity exception
      */
     private void checkSourceDirectoryOrFiles() throws LittleBeeCommandException {
-        if (ObjectUtils.isEmpty(this.sourceFiles) && ObjectUtils.isEmpty(this.sourceDirectory)) {
+        if (ObjectTools.isEmpty(this.sourceFiles) && ObjectTools.isEmpty(this.sourceDirectory)) {
             throw new IllegalArgumentException("Either file name or directory must exist.");
         }
-        if (!ObjectUtils.isEmpty(this.sourceDirectory)) {
+        if (!ObjectTools.isEmpty(this.sourceDirectory)) {
             String sourceDirectoryPath = getExecutionDirectory() + LittleBeeConstant.SLASH + this.sourceDirectory;
             File directory = new File(sourceDirectoryPath);
             if (!directory.exists()) {
@@ -136,7 +136,7 @@ public class ServerScpCommand extends ServerCommand {
      * @throws LittleBeeCommandException Check validity exception
      */
     private void checkHostnameOrIp() throws LittleBeeCommandException {
-        if (ObjectUtils.isEmpty(this.targetHostname) && ObjectUtils.isEmpty(this.targetIp)) {
+        if (ObjectTools.isEmpty(this.targetHostname) && ObjectTools.isEmpty(this.targetIp)) {
             throw new LittleBeeCommandException("The targetHostname or targetIp of the target server must exist.");
         }
     }
@@ -147,7 +147,7 @@ public class ServerScpCommand extends ServerCommand {
      * @throws LittleBeeCommandException Check validity exception
      */
     private void checkTargetDirectory() throws LittleBeeCommandException {
-        if (ObjectUtils.isEmpty(this.targetDirectory)) {
+        if (ObjectTools.isEmpty(this.targetDirectory)) {
             throw new LittleBeeCommandException("The targetDirectory cannot be null.");
         }
     }
@@ -163,8 +163,8 @@ public class ServerScpCommand extends ServerCommand {
      * @throws
      */
     private String getSource() throws LittleBeeCommandException {
-        if (!ObjectUtils.isEmpty(this.sourceFiles)) {
-            return StringUtils.arrayToDelimitedString(this.sourceFiles, LittleBeeConstant.SPACE);
+        if (!ObjectTools.isEmpty(this.sourceFiles)) {
+            return StringTools.arrayToDelimitedString(this.sourceFiles, LittleBeeConstant.SPACE);
         }
         return this.sourceDirectory;
     }
@@ -189,7 +189,7 @@ public class ServerScpCommand extends ServerCommand {
      * @return target server connection info
      */
     private String getTargetServerInfo() {
-        return !ObjectUtils.isEmpty(this.targetHostname) ? this.targetHostname : this.targetIp;
+        return !ObjectTools.isEmpty(this.targetHostname) ? this.targetHostname : this.targetIp;
     }
 
     /**
@@ -200,7 +200,7 @@ public class ServerScpCommand extends ServerCommand {
     private List<String> getScpOptions() {
         List<String> options = new LinkedList<>();
         // if sourceDirectory not empty, need add "-r" option
-        if (!ObjectUtils.isEmpty(this.sourceDirectory)) {
+        if (!ObjectTools.isEmpty(this.sourceDirectory)) {
             options.add(LittleBeeConstant.RECURSIVE_COPY);
         }
         return options;

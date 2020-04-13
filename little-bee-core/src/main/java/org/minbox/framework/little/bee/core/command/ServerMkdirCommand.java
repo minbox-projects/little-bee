@@ -1,7 +1,7 @@
 package org.minbox.framework.little.bee.core.command;
 
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
-import org.springframework.util.ObjectUtils;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
 
 /**
  * Create directory command implementation
@@ -38,7 +38,7 @@ public class ServerMkdirCommand extends ServerCommand {
      * @throws LittleBeeCommandException Exception thrown by validation data
      */
     private void checkValidity() throws LittleBeeCommandException {
-        if (ObjectUtils.isEmpty(this.directory)) {
+        if (ObjectTools.isEmpty(this.directory)) {
             throw new LittleBeeCommandException("The directory cannot be null.");
         }
     }

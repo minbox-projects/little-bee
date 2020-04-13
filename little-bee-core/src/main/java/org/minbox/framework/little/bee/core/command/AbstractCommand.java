@@ -7,10 +7,10 @@ import org.minbox.framework.little.bee.core.command.response.AbstractCommandResp
 import org.minbox.framework.little.bee.core.command.response.CommandResponse;
 import org.minbox.framework.little.bee.core.command.response.CommandResponseFactory;
 import org.minbox.framework.little.bee.core.command.response.CommandResponseType;
+import org.minbox.framework.little.bee.core.tools.Assert;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 
 /**
  * Abstract implementation of the {@link Command} interface
@@ -122,7 +122,7 @@ public abstract class AbstractCommand implements Command {
     @Override
     public void setExecutionDirectory(String executionDirectory) {
         this.executionDirectory = executionDirectory;
-        if (ObjectUtils.isEmpty(executionDirectory)) {
+        if (ObjectTools.isEmpty(executionDirectory)) {
             logger.warn("If you do not set the execution directory, the command will be executed at \"/root\"");
         }
     }
@@ -182,7 +182,7 @@ public abstract class AbstractCommand implements Command {
      * @return command bash
      */
     private String getBash() {
-        if (ObjectUtils.isEmpty(this.bash)) {
+        if (ObjectTools.isEmpty(this.bash)) {
             throw new LittleBeeCommandException("The command bash is not set.");
         }
         return bash;
@@ -196,7 +196,7 @@ public abstract class AbstractCommand implements Command {
      * @return Remote execution when set to true，false for local
      */
     public boolean isRemoteExecution() {
-        if (remoteExecution && ObjectUtils.isEmpty(this.authenticate)) {
+        if (remoteExecution && ObjectTools.isEmpty(this.authenticate)) {
             throw new LittleBeeCommandException("When setting \"remoteExecution\" to true, you also need to set \"Authenticate\"");
         }
         return remoteExecution;
@@ -262,11 +262,11 @@ public abstract class AbstractCommand implements Command {
      * @return command options string
      */
     protected String getFormatOptions() {
-        if (!ObjectUtils.isEmpty(this.options)) {
+        if (!ObjectTools.isEmpty(this.options)) {
             StringBuffer buffer = new StringBuffer();
             for (int i = 0; i < options.length; i++) {
                 String option = options[i];
-                if (ObjectUtils.isEmpty(option)) {
+                if (ObjectTools.isEmpty(option)) {
                     continue;
                 }
                 buffer.append(option);
@@ -353,7 +353,7 @@ public abstract class AbstractCommand implements Command {
         if (remoteExecution) {
             buffer.append(LittleBeeConstant.QUOTE);
         }
-        if (!ObjectUtils.isEmpty(this.executionDirectory)) {
+        if (!ObjectTools.isEmpty(this.executionDirectory)) {
             buffer.append(getFormatExecutionDirectory());
         }
         String command = formatNonBlocking();

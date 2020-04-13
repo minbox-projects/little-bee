@@ -1,7 +1,7 @@
 package org.minbox.framework.little.bee.core.command;
 
 import org.minbox.framework.little.bee.core.LittleBeeCommandException;
-import org.springframework.util.ObjectUtils;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -61,7 +61,7 @@ public class ServerRunScriptCommand extends ServerCommand {
         List<String> options = new LinkedList<>();
         options.add(this.script);
         // add all script options
-        if (!ObjectUtils.isEmpty(this.scriptOptions)) {
+        if (!ObjectTools.isEmpty(this.scriptOptions)) {
             options.addAll(Arrays.asList(this.scriptOptions));
         }
         return options;
@@ -73,7 +73,7 @@ public class ServerRunScriptCommand extends ServerCommand {
      * @throws LittleBeeCommandException Exception thrown by validation data
      */
     private void checkValidity() throws LittleBeeCommandException {
-        if (ObjectUtils.isEmpty(this.script)) {
+        if (ObjectTools.isEmpty(this.script)) {
             throw new LittleBeeCommandException("The script cannot be null.");
         }
     }

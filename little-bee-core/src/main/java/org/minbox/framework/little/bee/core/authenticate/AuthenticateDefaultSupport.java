@@ -1,7 +1,8 @@
 package org.minbox.framework.little.bee.core.authenticate;
 
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
+import org.minbox.framework.little.bee.core.tools.Assert;
+import org.minbox.framework.little.bee.core.tools.ObjectTools;
+
 
 /**
  * The {@link Authenticate} default support class
@@ -61,9 +62,9 @@ public class AuthenticateDefaultSupport implements Authenticate {
     @Override
     public String getConnectionInformation() {
         Assert.notNull(username, "Username to connect to the server cannot be empty");
-        if (ObjectUtils.isEmpty(hostname) && ObjectUtils.isEmpty(serverIp)) {
+        if (ObjectTools.isEmpty(hostname) && ObjectTools.isEmpty(serverIp)) {
             throw new IllegalArgumentException("hostname and serverIp at least one");
         }
-        return String.format(HOST_CONNECTION_PATTERN, username, !ObjectUtils.isEmpty(hostname) ? hostname : serverIp);
+        return String.format(HOST_CONNECTION_PATTERN, username, !ObjectTools.isEmpty(hostname) ? hostname : serverIp);
     }
 }
